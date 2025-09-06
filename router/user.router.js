@@ -1,6 +1,12 @@
 const router=require('express').Router();
+const { upload } = require('../helpers/image_uploader');
 const UserController=require('../controller/user.controller');
 router.post('/registration',UserController.register);
 router.post('/login',UserController.login);
-
+router.get('/getData/:id',UserController.getUserData);
+router.patch('/updateUsername/:email',UserController.updateUsername);
+router.patch('/updatePassword/:email',UserController.updatePassword);
+router.patch('/updateAvatarUrl/:email',upload.single('avatar'),UserController.avatarUrlUpdate);
+// router.patch('/updateAvatarUrl/:email',UserController.avatarUrlUpdate);
+router.post('/logout',UserController.logout);
 module.exports=router;
