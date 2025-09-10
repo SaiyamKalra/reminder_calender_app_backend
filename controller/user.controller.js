@@ -155,6 +155,23 @@ exports.avatarUrlUpdate=async(req,res,next)=>{
     }
 }
 
+exports.getAllUsername=async(req,res,next)=>{
+    try{
+        const successRes=await UserService.getAllUsername();
+        if(!successRes){
+            return res.status(400).json({
+                error:"Username does not exist"
+            });
+        }
+        return res.status(200).json({
+            status:true,
+            response:"Username fetched successfully",
+            data:successRes,
+        })
+    }catch(e){
+        next(e);
+    }
+}
 
 exports.logout=async(req,res,next)=>{
     try{

@@ -15,7 +15,9 @@ const fileFilter=(req,file,cb)=>{
         cb(null,true);
     }
     else{
-        cb(new Error('unsupported files use only jpg or png'),false);
+        const error=new Error('unsupported files use only jpg or png');
+        error.statusCode=415;
+        cb(error,false);
     }
 };
 

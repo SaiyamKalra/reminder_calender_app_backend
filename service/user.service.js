@@ -66,6 +66,15 @@ class UserService{
         }
     }
 
+    static async getAllUsername(){
+        try{
+            const allUsername=await UserModel.find({},{username:1,_id:0});
+            return allUsername;
+        }catch(e){
+            throw e;
+        }
+    }
+
     static async invalidateToken(token){
         try{
             const blacklistedToken=new TokenModel({token});
