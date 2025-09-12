@@ -17,10 +17,21 @@ class ChatService{
             throw e;
         }
     }
-    static async markAsRead(chatId,messageId){
+    static async markAsRead(chatId,messageIds){
         try{
-            const updateResult=await ChatModel.updateMany({chatId:chatId,_id:{$in:messageId},isRead:false},{$set:{isRead:true,readAt:new Date(),},})
+            if (!Array.isArray(messageIds)) {
+                throw new Error("messageIds must be an array.");
+            }
+            const updateResult=await ChatModel.updateMany({chatId:chatId,_id:{$in:messageIds},isRead:false},{$set:{isRead:true,readAt:new Date(),},})
             return updateResult;
+        }catch(e){
+            throw e;
+        }
+    }
+    static async deleteMessage(messageId){
+        try{
+            const deleteUser=await ChatModel.deleteOne({_id:messageId});
+            return deleteUser;
         }catch(e){
             throw e;
         }

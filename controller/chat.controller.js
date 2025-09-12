@@ -25,7 +25,7 @@ exports.message=async(req,res,next)=>{
 
 exports.getMessage=async(req,res,next)=>{
     try{
-        const {senderEmail,receiverEmail}=req.body;
+        const {senderEmail,receiverEmail}=req.query;
         if(!senderEmail || !receiverEmail){
             return res.status(400).json({
                 status:false,
@@ -47,14 +47,39 @@ exports.getMessage=async(req,res,next)=>{
 
 exports.markAsRead=async(req,res,next)=>{
     try{
-        const{senderEmail,receiverEmail,messageId}=req.body;
+        const{senderEmail,receiverEmail,messageIds}=req.body;
+        if (!senderEmail || !receiverEmail || !messageIds || !Array.isArray(messageIds)) {
+            return res.status(400).json({
+                status: false,
+                message: 'Invalid request body. `messageIds` must be an array.',
+            });
+        }
         const sortedEmails=[senderEmail,receiverEmail].sort();
         const chatId=sortedEmails.join('_');
-        const result=await ChatService.markAsRead(chatId,messageId);
+        const result=await ChatService.markAsRead(chatId,messageIds);
         return res.status(200).json({
             status:true,
             message:'Message marked as read',
             data:result,
+        })
+    }catch(e){
+        next(e);
+    }
+}
+
+exports.deleteMessage=async(req,res,next)=>{
+    try{
+        const{messageId}=req.params;
+        const successRes=await ChatService.deleteMessage(messageId);
+        if(!successRes){
+            return res.status(400).json({
+                status:false,
+                message:'Message not found',
+            })
+        }
+        return res.status(200).json({
+            status:true,
+            message:'Message deleted successfully',
         })
     }catch(e){
         next(e);

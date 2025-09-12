@@ -156,8 +156,9 @@ exports.avatarUrlUpdate=async(req,res,next)=>{
 }
 
 exports.getAllUsername=async(req,res,next)=>{
+    const {email}=req.params;
     try{
-        const successRes=await UserService.getAllUsername();
+        const successRes=await UserService.getAllUsername(email);
         if(!successRes){
             return res.status(400).json({
                 error:"Username does not exist"

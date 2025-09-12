@@ -66,9 +66,9 @@ class UserService{
         }
     }
 
-    static async getAllUsername(){
+    static async getAllUsername(email){
         try{
-            const allUsername=await UserModel.find({},{username:1,_id:0});
+            const allUsername=await UserModel.find({email:{$ne:email}},{username:1,email:1,_id:0});
             return allUsername;
         }catch(e){
             throw e;

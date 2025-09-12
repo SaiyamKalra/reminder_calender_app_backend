@@ -7,6 +7,6 @@ router.get('/getData/:id',UserController.getUserData);
 router.patch('/updateUsername/:email',UserController.updateUsername);
 router.patch('/updatePassword/:email',UserController.updatePassword);
 router.patch('/updateAvatarUrl/:email',upload.single('avatar'),UserController.avatarUrlUpdate);
-router.get('/usernames',UserController.getAllUsername);
+router.get('/usernames/:email',UserController.getAllUsername);
 router.post('/logout',UserController.logout);
 module.exports=router;
